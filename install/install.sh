@@ -2,7 +2,7 @@
 
 # Set desired version to be installed
 VERSION="${VERSION:-master}"
-GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-bluerobotics/blueos-docker}
+GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-msalmonw/BlueOSRebrand}
 DOCKER_USER=${DOCKER_USER:-$(echo $GITHUB_REPOSITORY | cut -d'/' -f1 | tr '[:upper:]' '[:lower:]')}
 REMOTE="${REMOTE:-https://raw.githubusercontent.com/${GITHUB_REPOSITORY}}"
 ROOT="$REMOTE/$VERSION"
@@ -203,7 +203,7 @@ command -v raspi-config && (
 echo "Downloading bootstrap"
 BLUEOS_BOOTSTRAP="$DOCKER_USER/blueos-bootstrap:$VERSION" # Use current version
 BLUEOS_CORE="$DOCKER_USER/blueos-core:$VERSION" # We don't have a stable tag yet
-BLUEOS_FACTORY="bluerobotics/blueos-core:factory" # used for "factory reset"
+BLUEOS_FACTORY="msalmonw/blueos-core:$VERSION" # used for "factory reset"
 
 docker pull $BLUEOS_BOOTSTRAP
 docker pull $BLUEOS_CORE
@@ -226,14 +226,8 @@ docker create \
     -e BLUEOS_CONFIG_PATH=$HOME/.config/blueos \
     $BLUEOS_BOOTSTRAP
 
-# Ensure docker can run without sudo
-groupadd docker || true
-usermod -aG docker pi || true
-
-# Create service to start blueos-bootstrap container on boot
-curl -fsSL "$ROOT/install/configs/blueos.service" -o /etc/systemd/system/blueos.service
-systemctl start blueos
-systemctl enable blueos
+# add docker entry to rc.local
+sed -i "\%^exit 0%idocker start blueos-bootstrap" /etc/rc.local || echo "Failed to add docker start on rc.local, BlueOS will not start on boot!"
 
 # Configure network settings
 ## This should be after everything, otherwise network problems can happen
