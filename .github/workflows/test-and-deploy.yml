@@ -89,6 +89,8 @@ jobs:
 
       # We use our own pimod as upstream doesn't provide armv7 images
       - name: Pimod Build
+        env:
+          BASE_IMAGE: "raspios_lite_armhf/images/raspios_lite_armhf-2024-07-04/2024-07-04-raspios-bookworm-armhf-lite.img.xz"
         run: |
           VERSION=$GITHUB_REPOSITORY
           VERSION=${VERSION:-master}
@@ -98,6 +100,7 @@ jobs:
             -e PATH=/pimod:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
             -e GITHUB_REPOSITORY=$GITHUB_REPOSITORY \
             -e VERSION=$GITHUB_REF_NAME \
+            -e BASE_IMAGE=$BASE_IMAGE \
             --workdir=/files \
             --platform ${{ matrix.platforms }} nature40/pimod:latest pimod.sh deploy/pimod/blueos.Pifile
 
@@ -119,15 +122,15 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      - name: Upload raspberry image for release
-        uses: svenstaro/upload-release-action@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: BlueOS-raspberry.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          prerelease: true
+      #- name: Upload raspberry image for release
+      #  uses: svenstaro/upload-release-action@v2
+      #  if: startsWith(github.ref, 'refs/tags/')
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: BlueOS-raspberry.zip
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
+      #    prerelease: true
 
       # This is required because docker has root permissions, which means the runner is unable to clear this cache normally
       - name: Cleanup
