@@ -74,6 +74,7 @@ jobs:
     strategy:
       matrix:
         platforms: ["linux/arm/v7"]
+        image: ["raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"]
 
     steps:
       - name: Install dependencies
