@@ -93,7 +93,7 @@ jobs:
 
       - name: Pimod Build
         env:
-          BASE_IMAGE: "raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-05-raspios-bullseye-armhf-lite.img.xz"
+          BASE_IMAGE: "raspios_lite_armhf/images/raspios_lite_armhf-2022-01-28/2022-01-28-raspios-bullseye-armhf-lite.zip"
         run: |
           VERSION=$GITHUB_REPOSITORY
           VERSION=${VERSION:-master}
