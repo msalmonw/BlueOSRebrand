@@ -66,7 +66,7 @@ jobs:
         run: bun run --cwd ./core/frontend build
 
   deploy-raspberry-image:
-    #needs: deploy-docker-images
+    needs: [frontend-tests, python-tests]
     if: github.event_name != 'pull_request' && github.repository_owner == 'msalmonw'
     timeout-minutes: 180 # Detect if it gets into an infinite loop or some unexpected state
     runs-on: ubuntu-latest
@@ -102,6 +102,7 @@ jobs:
             -e PATH=/pimod:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
             -e GITHUB_REPOSITORY=$GITHUB_REPOSITORY \
             -e VERSION=$GITHUB_REF_NAME \
+            -e BASE_IMAGE=${{ matrix.image }} \
             --workdir=/files \
             --platform ${{ matrix.platforms }} nature40/pimod:latest pimod.sh deploy/pimod/blueos.Pifile
 
