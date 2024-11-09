@@ -92,6 +92,8 @@ jobs:
           platforms: all
 
       - name: Pimod Build
+        env:
+          BASE_IMAGE: "raspios_lite_armhf/images/raspios_lite_armhf-2023-12-11/2023-12-05-raspios-bullseye-armhf-lite.img.xz"
         run: |
           VERSION=$GITHUB_REPOSITORY
           VERSION=${VERSION:-master}
@@ -101,6 +103,7 @@ jobs:
             -e PATH=/pimod:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
             -e GITHUB_REPOSITORY=$GITHUB_REPOSITORY \
             -e VERSION=$GITHUB_REF_NAME \
+            -e BASE_IMAGE=$BASE_IMAGE \
             --workdir=/files \
             --platform ${{ matrix.platforms }} nature40/pimod:latest pimod.sh deploy/pimod/blueos.Pifile
 
