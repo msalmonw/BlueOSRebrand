@@ -36,9 +36,6 @@ jobs:
       - name: Install git
         run: sudo apt install -y git
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v2
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
