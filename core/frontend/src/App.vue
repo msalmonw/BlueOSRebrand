@@ -388,8 +388,8 @@
 <script lang="ts">
 import Vue, { defineAsyncComponent } from 'vue'
 
-import blueos_blue from '@/assets/img/blueos-logo-blue.svg'
-import blueos_white from '@/assets/img/blueos-logo-white.svg'
+import blueos_blue from '@/assets/img/blueos-logo-blue.jpg'
+import blueos_white from '@/assets/img/blueos-logo-white.jpg'
 import settings from '@/libs/settings'
 import helper from '@/store/helper'
 import wifi from '@/store/wifi'
